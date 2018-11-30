@@ -26,19 +26,20 @@ def hello():
 def products():
     products = db.session.query(Product).all() # SQLAlchemy request => 'SELECT * FROM products'
 
-    return render_template('base.html', products=products)
+    return render_template('home.html', products=products)
 
 @app.route('/products/<int:id>')
 def read_product(id):
     product = db.session.query(Product).get(id) # SQLAlchemy request => 'SELECT * FROM products'
 
-    return product_schema.jsonify(product)
+    return render_template('product.html', product=product)
+
 
 @app.route('/product', methods=['POST'])
 def create_product():
     #pdb.set_trace()
     data = request.get_json()
-    name = data.get('name')
+    name = data['name']
     description = data.get('description')
 
     objProduct = Product()
